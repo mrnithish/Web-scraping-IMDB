@@ -1,35 +1,30 @@
-import pandas as pd
-import numpy as np
 import requests,openpyxl
 from bs4 import BeautifulSoup
 
-PhoneName=[]
-Price=[]
-Features=[]
-newdataframe=pd.DataFrame()
+excel=openpyxl.Workbook()
+#print(excel.sheetnames)
+sheet=excel.active
+sheet.title='Top 250 MOVIES'
+#print(excel.sheetnames)
+sheet.append(['RANK','MOVIES','YEAR','RATING'])
 
 try:
-    source = requests.get("https://www.flipkart.com/search?q=mobile+phone+5g&sid=tyy%2C4io&as=on&as-show=on&otracker=AS_QueryStore_OrganicAutoSuggest_1_13_na_na_na&otracker1=AS_QueryStore_OrganicAutoSuggest_1_13_na_na_na&as-pos=1&as-type=RECENT&suggestionId=mobile+phone+5g%7CMobiles&requestId=61c49f0b-72f7-46bd-bc25-43d98824df52&as-searchtext=moblie%20phones")
+    source = requests.get("https://www.imdb.com/chart/top/")
     source.raise_for_status() #it throws the error if the link is not
 
     soup=BeautifulSoup(source.text,'html.parser')
-    phones=soup.findAll('div',class_='_4rR01T')
-    features=soup.findAll('li',class_='rgWa7D')
-    price=soup.findAll('div',class_='_30jeq3 _1_WHN1')
-    for i in phones:
-        phone=i.text
-        PhoneName.append(phone)
-    for i in price:
-        price = i.text
-        Price.append(price)
-    for i in features:
-        featu = i.text
-        Features.append(featu)
-    newdataframe['Phone']=PhoneName
-    newdataframe['Price'] = Price
-    newdataframe.to_excel("exceldata.xlsx",index=False)
-    excelData=pd.read_excel('exceldata.xlsx')
-    print(excelData)
+    movies=soup.find('tbody',class_='lister-list').find_all('tr')
+    #print(len(movies))
+    for namemovie in movies:
+        name=namemovie.find('td',class_='titleColumn').a.text
+        rank=namemovie.find('td',class_='titleColumn').get_text(strip=True).split('.')[0]
+        year=namemovie.find('td',class_='titleColumn').span.text.strip('()')
+        rating =namemovie.find('td',class_='ratingColumn imdbRating').strong.text
+        #print(rank)
+        #print(rank,name,year,rating)
+        #sheet.append([rank,name,year,rating])
 
 except Exception as e:
     print(e)
+
+excel.save('Top 250 IMDB.xlsx')
