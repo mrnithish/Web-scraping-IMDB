@@ -39,7 +39,7 @@ cd Imdb
 2. Run the script using the following command:
 
 ```bash
-python imdb_scraper.py
+python scrape.py
 ```
 
 - The scraped data will be displayed in the console or saved in a structured output file, depending on your script's configuration.
