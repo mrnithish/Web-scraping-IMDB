@@ -23,7 +23,7 @@ Before running the script, make sure you have the following installed:
 1. Clone this repository to your local machine:
 
 ```bash
-git clone https://github.com/yourusername/imdb-scraping.git
+git clone https://github.com/mrnithish/Web-scraping-IMDB.git
 ```
 
 2. Navigate to the project directory:
