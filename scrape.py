@@ -8,6 +8,8 @@ sheet.title='Top 250 MOVIES'
 #print(excel.sheetnames)
 sheet.append(['RANK','MOVIES','YEAR','RATING'])
 
+
+
 try:
     source = requests.get("https://www.imdb.com/chart/top/")
     source.raise_for_status() #it throws the error if the link is not
@@ -26,5 +28,6 @@ try:
 
 except Exception as e:
     print(e)
+
 
 excel.save('Top 250 IMDB.xlsx')
